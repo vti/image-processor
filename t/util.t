@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 21;
+use Test::More tests => 24;
 
 use_ok('Image::Processor::Util');
 
@@ -35,7 +35,7 @@ is_deeply(
 is_deeply(
     $r->calculate('150x100' => '50x50', {crop => 0}),
     {   paste =>
-          {width => 50, height => 50, top => (50 - 100 / 3.0) / 2.0, left => 0},
+          {width => 50, height => 50, top => 8.33333333333334, left => 0},
         scale => {width => 50, height => 100 / 3}
     }
 );
