@@ -78,7 +78,17 @@ sub calculate {
         $w_ = $h_ / $h * $w;
     }
 
-    unless ($w == $w_ && $h == $h_) {
+    if ($w_ >= $w && $h_ >= $h) {
+        if ($w_ > $w && $h_ > $h) {
+            $tf->{paste} = {
+                width  => $w_,
+                height => $h_,
+                top    => ($h_ - $h) * $align,
+                left   => ($w_ - $w) * $align
+            };
+        }
+    }
+    else {
         $tf->{scale} = {width => $w_, height => $h_};
     }
 

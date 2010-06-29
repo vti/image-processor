@@ -15,6 +15,7 @@ my $p = Image::Processor->new;
 my @params = (
     ['100x100'],
     ['100x100', {crop => 0, bgcolor => '#000000'}],
+    ['500x600', {crop => 0, bgcolor => '#000000'}],
     ['100x'],
     ['x100']
 );

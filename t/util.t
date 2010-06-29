@@ -93,3 +93,6 @@ is_deeply(
     $r->calculate('150x100' => '50x'),
     {scale => {width => 50, height => 100/3}}
 );
+
+is_deeply($r->calculate('50x50' => '100x100'),
+    {paste => {width => 100, height => 100, top => 25, left => 25}});
