@@ -61,7 +61,9 @@ sub resize {
     my $size = shift;
     my $params = shift;
 
-    $params = {};
+    $params ||= {};
+
+    $params->{bgcolor} ||= '#ffffff';
 
     my $w = $self->{backend}->width;
     my $h = $self->{backend}->height;
@@ -70,6 +72,8 @@ sub resize {
 
     $self->{backend}->crop(%{$tf->{crop}})   if $tf->{crop};
     $self->{backend}->scale(%{$tf->{scale}}) if $tf->{scale};
+    $self->{backend}->paste(color => $params->{bgcolor}, %{$tf->{paste}})
+      if $tf->{paste};
 
     return $self;
 }

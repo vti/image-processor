@@ -7,13 +7,14 @@ use FindBin;
 
 use lib "$FindBin::Bin/../lib";
 
+use Data::Dumper;
 use Image::Processor;
 
 my $p = Image::Processor->new;
 
 my @params = (
     ['100x100'],
-    ['100x100', crop => 0, bg => '#000000'],
+    ['100x100', {crop => 0, bgcolor => '#000000'}],
     ['100x'],
     ['x100']
 );
@@ -33,12 +34,7 @@ foreach my $param (@params) {
     $p->load("$FindBin::Bin/linux.png")->resize(@$param)
       ->save("$FindBin::Bin/data/linux-$suffix.png");
 
-    my $size = shift @$param;
-    my %args = @$param;
-    my $printable_params = $size;
-    $printable_params
-      .= ', ' . join ', ' => map { $_ . '=>' . $args{$_} } keys %args
-      if %args;
+    my $printable_params = Dumper($param);
 
     print <<EOF;
 <img src="data/linux-$suffix.png" border="1" /><br />

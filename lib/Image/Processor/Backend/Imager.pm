@@ -57,6 +57,24 @@ sub crop {
     return 1;
 }
 
+sub paste {
+    my $self   = shift;
+    my %params = @_;
+
+    my $out = Imager->new(
+        xsize => $params{width},
+        ysize => $params{height}
+    );
+    $out->box(filled => 1, color => $params{color});
+    $out->paste(
+        left => $params{left},
+        top  => $params{top},
+        img  => $self->image
+    );
+
+    $self->image($out);
+}
+
 sub save {
     my $self = shift;
     my ($path) = @_;

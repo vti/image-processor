@@ -19,12 +19,25 @@ is_deeply(
     {crop => {left => 25, width => 50}}
 );
 is_deeply(
+    $r->calculate('100x50' => '50x50', {crop => 0}),
+    {   paste => {width => 50, height => 50, left => 0, top => 25 / 2},
+        scale => {width => 50, height => 25}
+    }
+);
+is_deeply(
     $r->calculate('50x100' => '50x50'),
     {crop => {top => 25, height => 50}}
 );
 is_deeply(
     $r->calculate('150x100' => '50x50'),
     {crop => {left => 25, width => 100}, scale => {width => 50, height => 50}}
+);
+is_deeply(
+    $r->calculate('150x100' => '50x50', {crop => 0}),
+    {   paste =>
+          {width => 50, height => 50, top => (50 - 100 / 3.0) / 2.0, left => 0},
+        scale => {width => 50, height => 100 / 3}
+    }
 );
 
 
