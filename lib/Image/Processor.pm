@@ -56,24 +56,28 @@ sub load {
     return $self;
 }
 
-sub resize {
-    my $self = shift;
-    my $size = shift;
+sub process {
+    my $self   = shift;
     my $params = shift;
 
     $params ||= {};
 
     $params->{bgcolor} ||= '#ffffff';
 
-    my $w = $self->{backend}->width;
-    my $h = $self->{backend}->height;
+    if ($params->{size}) {
+        my $w = $self->{backend}->width;
+        my $h = $self->{backend}->height;
 
-    my $tf = Image::Processor::Util->calculate($w . 'x' . $h => $size, $params);
+        my $tf = Image::Processor::Util->calculate(
+            $w . 'x' . $h => $params->{size},
+            $params
+        );
 
-    $self->{backend}->crop(%{$tf->{crop}})   if $tf->{crop};
-    $self->{backend}->scale(%{$tf->{scale}}) if $tf->{scale};
-    $self->{backend}->paste(color => $params->{bgcolor}, %{$tf->{paste}})
-      if $tf->{paste};
+        $self->{backend}->crop(%{$tf->{crop}})   if $tf->{crop};
+        $self->{backend}->scale(%{$tf->{scale}}) if $tf->{scale};
+        $self->{backend}->paste(color => $params->{bgcolor}, %{$tf->{paste}})
+          if $tf->{paste};
+    }
 
     return $self;
 }

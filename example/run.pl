@@ -13,11 +13,11 @@ use Image::Processor;
 my $p = Image::Processor->new;
 
 my @params = (
-    ['100x100'],
-    ['100x100', {crop => 0, bgcolor => '#000000'}],
-    ['500x600', {crop => 0, bgcolor => '#000000'}],
-    ['100x'],
-    ['x100']
+    [{size => '100x100'}],
+    [{size => '100x100', crop => 0, bgcolor => '#000000'}],
+    [{size => '500x600', crop => 0, bgcolor => '#000000'}],
+    [{size => '100x'}],
+    [{size => 'x100'}]
 );
 
 print <<EOF;
@@ -32,7 +32,7 @@ my $i = 0;
 foreach my $param (@params) {
     my $suffix = $i++;
 
-    $p->load("$FindBin::Bin/linux.png")->resize(@$param)
+    $p->load("$FindBin::Bin/linux.png")->process(@$param)
       ->save("$FindBin::Bin/data/linux-$suffix.png");
 
     my $printable_params = Dumper($param);
