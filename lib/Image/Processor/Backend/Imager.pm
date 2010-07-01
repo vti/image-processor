@@ -21,7 +21,7 @@ sub load {
     my $self = shift;
     my ($path) = @_;
 
-    return $self->image->read(file => $path);
+    return $self->image->read(file => $path) or die Imager->errstr;
 }
 
 sub width  { shift->image->getwidth }
@@ -50,8 +50,7 @@ sub crop {
         width  => $params{width},
         top    => $params{top},
         height => $params{height}
-    );
-    return unless $image;
+    ) or die Imager->errstr;
 
     $self->image($image);
     return 1;
@@ -73,13 +72,15 @@ sub paste {
     );
 
     $self->image($out);
+
+    return 1;
 }
 
 sub save {
     my $self = shift;
     my ($path) = @_;
 
-    return $self->image->write(file => $path);
+    return $self->image->write(file => $path) or die Imager->errstr;
 }
 
 1;

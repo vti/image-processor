@@ -5,6 +5,7 @@ use warnings;
 
 require File::Path;
 require File::Spec;
+require File::Basename;
 
 use Image::Processor::Util;
 
@@ -31,9 +32,9 @@ sub new {
     return $self;
 }
 
-sub load { Image::Processor::Worker->new(backend => shift->{backend})->load(@_) }
+sub load { Image::Processor::Image->new(backend => shift->{backend})->load(@_) }
 
-package Image::Processor::Worker;
+package Image::Processor::Image;
 
 use strict;
 use warnings;
@@ -51,7 +52,7 @@ sub load {
     my $self = shift;
     my $file = shift;
 
-    $self->{backend}->load($file);
+    return unless $self->{backend}->load($file);
 
     return $self;
 }
@@ -86,7 +87,13 @@ sub save {
     my $self = shift;
     my $file = shift;
 
-    $self->{backend}->save($file);
+    my $dir = File::Basename::dirname($file);
+
+    File::Path::mkpath($dir) or die qq/Can't make directory "$dir": $!/;
+
+    return unless $self->{backend}->save($file);
+
+    return $self;
 }
 
 1;
